@@ -1,12 +1,31 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit, signal } from '@angular/core';
+import { SensexService } from './services/sensex.service';
+import { Sensex } from './models/sensex';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('sensex-dashboard');
-}
+export class App implements OnInit {
+
+  title = 'sensex-dashboard';
+
+  sensexData = signal<Sensex[]>([]);
+
+  constructor(private sensexService: SensexService) {}
+
+  ngOnInit(): void {
+
+    this.sensexService.getSensexData().subscribe(data => {
+
+      this.sensexData.set(data);
+
+      console.log(this.sensexData());
+
+    });
+
+  }
+
+}
