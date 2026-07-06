@@ -1,10 +1,25 @@
 import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { App } from './app';
+import { SensexService } from './services/sensex.service';
+import { of } from 'rxjs';
 
 describe('App', () => {
+  let mockSensexService: any;
+
   beforeEach(async () => {
+    mockSensexService = {
+      getSensexData: () => of([])
+    };
+
     await TestBed.configureTestingModule({
       imports: [App],
+      providers: [
+        { provide: SensexService, useValue: mockSensexService },
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     }).compileComponents();
   });
 
@@ -16,8 +31,10 @@ describe('App', () => {
 
   it('should render title', async () => {
     const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, sensex-dashboard');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Sensex Dashboard');
   });
 });
+
