@@ -3,26 +3,18 @@
 <table border="1">
 
   <tr>
-
     <th>Date</th>
     <th>Open</th>
-    <th>High</th>
-    <th>Low</th>
     <th>Close</th>
-
   </tr>
 
-  @for(item of sensexData(); track item.Date){
+  @for(item of sensexData(); track item.trade_date){
 
-  <tr>
-
-    <td>{{item.Date}}</td>
-    <td>{{item.Open}}</td>
-    <td>{{item.High}}</td>
-    <td>{{item.Low}}</td>
-    <td>{{item.Close}}</td>
-
-  </tr>
+    <tr>
+      <td>{{ item.trade_date }}</td>
+      <td>{{ item.open }}</td>
+      <td>{{ item.close }}</td>
+    </tr>
 
   }
 
