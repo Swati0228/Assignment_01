@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
-import * as Papa from 'papaparse';
+import { Observable } from 'rxjs';
 import { Sensex } from '../models/sensex';
 
 @Injectable({
