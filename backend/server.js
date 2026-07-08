@@ -72,7 +72,7 @@ app.post("/login", async (req, res) => {
 // ========================
 // FETCH FIRST 30 RECORDS
 // ========================
-app.get("/api/sensex", async (req, res) => {
+app.get("/api/sensex", authenticateToken, async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT trade_date, open, close
@@ -90,7 +90,6 @@ app.get("/api/sensex", async (req, res) => {
     });
   }
 });
-
 // ========================
 // START SERVER
 // ========================
