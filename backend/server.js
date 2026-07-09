@@ -70,18 +70,33 @@ app.post("/login", async (req, res) => {
 });
 
 // ========================
-// FETCH FIRST 30 RECORDS
+// FETCH SENSEX RECORDS WITH PAGINATION
 // ========================
 app.get("/api/sensex", authenticateToken, async (req, res) => {
   try {
-    const result = await pool.query(`
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const offset = (page - 1) * limit;
+
+    const countResult = await pool.query("SELECT COUNT(*) FROM sensex_data");
+    const totalCount = parseInt(countResult.rows[0].count, 10);
+
+    const dataResult = await pool.query(
+      `
       SELECT trade_date, open, close
       FROM sensex_data
       ORDER BY trade_date DESC
-      LIMIT 30
-    `);
+      LIMIT $1 OFFSET $2
+      `,
+      [limit, offset]
+    );
 
-    res.json(result.rows);
+    res.json({
+      data: dataResult.rows,
+      totalCount: totalCount,
+      page: page,
+      limit: limit
+    });
 
   } catch (err) {
     console.error(err);
