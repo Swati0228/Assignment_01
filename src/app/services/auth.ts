@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class Auth {
+export class AuthService {
 
   private loginUrl = 'http://localhost:3000/login';
 
