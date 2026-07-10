@@ -119,6 +119,38 @@ app.post("/login", async (req, res) => {
 
 });
 
+
+
+app.post("/api/sensex", authenticateToken, async (req, res) => {
+
+  const { trade_date, open, close } = req.body;
+
+  try {
+
+    await pool.query(
+      `
+      INSERT INTO sensex_data(trade_date, open, close)
+      VALUES($1,$2,$3)
+      `,
+      [trade_date, open, close]
+    );
+
+    res.status(201).json({
+      message: "Record Added Successfully"
+    });
+
+  } catch (err) {
+
+    console.error(err);
+
+    res.status(500).json({
+      message: "Database Error"
+    });
+
+  }
+
+});
+
 // ========================
 // FETCH SENSEX RECORDS WITH PAGINATION
 // ========================
