@@ -26,14 +26,14 @@
     <div class="hero-right">
       <div class="live-pill">
         <span class="live-dot"></span>
-        {{ sensexData().length }} Records
+        {{ totalRecords() }} Records
       </div>
       <button class="btn-logout" (click)="logout()">Logout</button>
     </div>
   </header>
 
   <!-- Stat Cards -->
-  @if (sensexData().length > 0) {
+  @if (totalRecords() > 0) {
     <section class="stats-grid">
       <div class="stat-card glow-blue">
         <div class="stat-icon-wrap blue">
@@ -41,7 +41,7 @@
         </div>
         <div class="stat-info">
           <span class="stat-label">Total Records</span>
-          <span class="stat-number">{{ sensexData().length }}</span>
+          <span class="stat-number">{{ totalRecords() }}</span>
         </div>
         <div class="stat-bar blue-bar"></div>
       </div>
@@ -104,7 +104,7 @@
         <tbody>
           @for (item of sensexData(); track item.trade_date; let i = $index) {
             <tr class="data-row">
-              <td class="row-num">{{ i + 1 }}</td>
+              <td class="row-num">{{ (currentPage() - 1) * pageSize() + i + 1 }}</td>
               <td class="row-date">{{ item.trade_date }}</td>
               <td class="row-val right">{{ item.open | number:'1.2-2' }}</td>
               <td class="row-val right">{{ item.close | number:'1.2-2' }}</td>
@@ -118,6 +118,46 @@
           }
         </tbody>
       </table>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination-container">
+      <div class="pagination-buttons">
+        <button
+          class="btn-page btn-prev"
+          [disabled]="currentPage() === 1"
+          (click)="prevPage()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          Prev
+        </button>
+
+        <span class="page-indicator">
+          <span class="page-current">{{ currentPage() }}</span>
+          <span class="page-sep">of</span>
+          <span class="page-total">{{ totalPages() }}</span>
+        </span>
+
+        <button
+          class="btn-page btn-next"
+          [disabled]="currentPage() === totalPages()"
+          (click)="nextPage()">
+          Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div class="pagination-info">
+        Showing
+        <strong>{{ (currentPage() - 1) * pageSize() + 1 }}</strong>
+        –
+        <strong>{{ currentPage() * pageSize() < totalRecords() ? currentPage() * pageSize() : totalRecords() }}</strong>
+        of
+        <strong>{{ totalRecords() }}</strong> entries
+      </div>
     </div>
   </section>
 

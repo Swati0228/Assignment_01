@@ -1,27 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Sensex } from '../models/sensex';
-
-export interface SensexResponse {
-  data: Sensex[];
-  totalCount: number;
-  page: number;
-  limit: number;
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class SensexService {
 
-  constructor(private http: HttpClient) { }
+  private apiUrl = 'http://localhost:3000/api/sensex';
 
-  getSensexData(page: number = 1, limit: number = 10): Observable<SensexResponse> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', limit.toString());
+  constructor(private http: HttpClient) {}
 
-    return this.http.get<SensexResponse>('http://localhost:3000/api/sensex', { params });
+  getSensexData(page: number, limit: number): Observable<{ data: Sensex[], totalCount: number, page: number, limit: number }> {
+    return this.http.get<{ data: Sensex[], totalCount: number, page: number, limit: number }>(`${this.apiUrl}?page=${page}&limit=${limit}`);
   }
 }

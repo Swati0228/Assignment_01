@@ -17,4 +17,15 @@ export class AuthService {
       password
     });
   }
+  register(email: string, password: string) {
+
+  return this.http.post<any>(
+    'http://localhost:3000/register',
+    {
+      email,
+      password
+    }
+  );
+
+}
 }

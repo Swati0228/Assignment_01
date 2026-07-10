@@ -1,1 +1,89 @@
-/* You can add global styles to this file, and also import other style files */
+/* ===== Global Styles — Sensex Dashboard (Vibrant) ===== */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-base: #0a0a1a;
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-strong: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(255, 255, 255, 0.15);
+
+  --text-white: #ffffff;
+  --text-light: #e0e4ef;
+  --text-dim: #8b92a8;
+  --text-faint: #5a6178;
+
+  --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+
+  --neon-blue: #4facfe;
+  --neon-pink: #f5576c;
+  --neon-green: #43e97b;
+  --neon-purple: #667eea;
+  --neon-amber: #fee140;
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xl: 24px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg-base);
+  color: var(--text-light);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Animated gradient mesh background */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(245, 87, 108, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 40% 80%, rgba(79, 172, 254, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 70%, rgba(67, 233, 123, 0.08) 0%, transparent 50%);
+  animation: meshMove 20s ease-in-out infinite alternate;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes meshMove {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  33%  { transform: translate(2%, -3%) rotate(1deg); }
+  66%  { transform: translate(-1%, 2%) rotate(-0.5deg); }
+  100% { transform: translate(1%, -1%) rotate(0.5deg); }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+::selection {
+  background: var(--neon-purple);
+  color: #fff;
+}

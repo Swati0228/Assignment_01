@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const pool = require("./db");
 const authenticateToken = require("./middleware/auth");
+
 const app = express();
 
 app.use(cors());
@@ -15,13 +16,60 @@ const PORT = 3000;
 const SECRET_KEY = "mysecretkey";
 
 // ========================
-// LOGIN API
+// REGISTER API
 // ========================
-app.post("/login", async (req, res) => {
+app.post("/register", async (req, res) => {
+
   const { email, password } = req.body;
 
   try {
-    // Check if user exists
+
+    // Check if user already exists
+    const existingUser = await pool.query(
+      "SELECT * FROM users WHERE email = $1",
+      [email]
+    );
+
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({
+        message: "User already exists"
+      });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Save user
+    await pool.query(
+      "INSERT INTO users(email, password) VALUES($1, $2)",
+      [email, hashedPassword]
+    );
+
+    res.status(201).json({
+      message: "Registration Successful"
+    });
+
+  } catch (err) {
+
+    console.error(err);
+
+    res.status(500).json({
+      message: "Server Error"
+    });
+
+  }
+
+});
+
+// ========================
+// LOGIN API
+// ========================
+app.post("/login", async (req, res) => {
+
+  const { email, password } = req.body;
+
+  try {
+
     const result = await pool.query(
       "SELECT * FROM users WHERE email = $1",
       [email]
@@ -35,7 +83,6 @@ app.post("/login", async (req, res) => {
 
     const user = result.rows[0];
 
-    // Compare entered password with hashed password
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
@@ -44,7 +91,6 @@ app.post("/login", async (req, res) => {
       });
     }
 
-    // Generate JWT Token
     const token = jwt.sign(
       {
         id: user.id,
@@ -62,23 +108,32 @@ app.post("/login", async (req, res) => {
     });
 
   } catch (err) {
+
     console.error(err);
+
     res.status(500).json({
       message: "Server Error",
     });
+
   }
+
 });
 
 // ========================
 // FETCH SENSEX RECORDS WITH PAGINATION
 // ========================
 app.get("/api/sensex", authenticateToken, async (req, res) => {
+
   try {
+
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 10;
     const offset = (page - 1) * limit;
 
-    const countResult = await pool.query("SELECT COUNT(*) FROM sensex_data");
+    const countResult = await pool.query(
+      "SELECT COUNT(*) FROM sensex_data"
+    );
+
     const totalCount = parseInt(countResult.rows[0].count, 10);
 
     const dataResult = await pool.query(
@@ -99,15 +154,20 @@ app.get("/api/sensex", authenticateToken, async (req, res) => {
     });
 
   } catch (err) {
+
     console.error(err);
+
     res.status(500).json({
       message: "Database Error",
     });
+
   }
+
 });
+
 // ========================
 // START SERVER
 // ========================
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server is running at http://localhost:${PORT}`);
 });

@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -16,42 +16,55 @@ export class Dashboard implements OnInit {
 
   sensexData = signal<Sensex[]>([]);
 
+  currentPage = signal<number>(1);
+  pageSize = signal<number>(10);
+  totalRecords = signal<number>(0);
+  // Compute total pages dynamically
+  totalPages = computed(() => Math.ceil(this.totalRecords() / this.pageSize()));
   constructor(
     private sensexService: SensexService,
     private router: Router
-  ) {}
-
+  ) { }
   ngOnInit(): void {
-
-    // Check if JWT token exists
     const token = localStorage.getItem('jwt');
-
     if (!token) {
       this.router.navigate(['/login']);
       return;
     }
-
-    // Fetch Sensex data
-    this.sensexService.getSensexData().subscribe({
-
-      next: (data) => {
-        this.sensexData.set(data);
-        console.log(data);
+    this.loadPageData(this.currentPage(), this.pageSize());
+  }
+  loadPageData(page: number, limit: number): void {
+    this.sensexService.getSensexData(page, limit).subscribe({
+      next: (res) => {
+        this.sensexData.set(res.data);
+        this.totalRecords.set(res.totalCount);
+        this.currentPage.set(res.page);
+        this.pageSize.set(res.limit);
       },
-
       error: (err) => {
-
         console.error("Error fetching data:", err);
-
         if (err.status === 401 || err.status === 403) {
           localStorage.removeItem('jwt');
           this.router.navigate(['/login']);
         }
-
       }
-
     });
-
+  }
+  // Pagination navigation helpers
+  nextPage(): void {
+    if (this.currentPage() < this.totalPages()) {
+      this.loadPageData(this.currentPage() + 1, this.pageSize());
+    }
+  }
+  prevPage(): void {
+    if (this.currentPage() > 1) {
+      this.loadPageData(this.currentPage() - 1, this.pageSize());
+    }
+  }
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages()) {
+      this.loadPageData(page, this.pageSize());
+    }
   }
 
   getHighestClose(): number {

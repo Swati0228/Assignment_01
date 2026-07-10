@@ -1,44 +1,80 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# ===================================
+# Angular
+# ===================================
 
-# Compiled output
 /dist
-/tmp
+/.angular
+/.angular/cache
 /out-tsc
+/tmp
 /bazel-out
+# Backend
+/backend/node_modules
+/backend/.env
 
-# Node
+# ===================================
+# Node.js
+# ===================================
+
 /node_modules
-npm-debug.log
-yarn-error.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+# ===================================
+# Environment Files
+# ===================================
 
-# Visual Studio Code
+.env
+.env.*
+
+# ===================================
+# IDEs
+# ===================================
+
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-!.vscode/mcp.json
-.history/*
 
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
+.idea/
+.project
+.classpath
+.settings/
+.c9/
+*.launch
+*.sublime-workspace
+
+# ===================================
+# Logs
+# ===================================
+
+logs
+*.log
+
+# ===================================
+# Coverage
+# ===================================
+
 /coverage
+
+# ===================================
+# Temporary Files
+# ===================================
+
+.history/
+.sass-cache/
+connect.lock
 /libpeerconnection.log
 testem.log
 /typings
 __screenshots__/
 
-# System files
+# ===================================
+# OS Files
+# ===================================
+
 .DS_Store
 Thumbs.db
