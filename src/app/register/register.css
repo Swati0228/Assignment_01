@@ -1,0 +1,183 @@
+/* ===== Floating Orbs ===== */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+.orb-1 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(102,126,234,0.4), transparent 70%);
+  top: -100px; right: -100px;
+  animation: float1 15s ease-in-out infinite alternate;
+}
+.orb-2 {
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(245,87,108,0.35), transparent 70%);
+  bottom: 5%; left: -80px;
+  animation: float2 18s ease-in-out infinite alternate;
+}
+@keyframes float1 {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(-60px,80px) scale(1.15); }
+}
+@keyframes float2 {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(50px,-60px) scale(1.1); }
+}
+
+/* ===== Page ===== */
+.login-page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* ===== Card ===== */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 48px 40px 44px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+  animation: cardIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ===== Logo ===== */
+.login-icon {
+  width: 64px; height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 18px;
+  margin: 0 auto 24px;
+  animation: iconPulse 3s ease-in-out infinite;
+}
+@keyframes iconPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(79,172,254,0.2); }
+  50%      { box-shadow: 0 0 20px 4px rgba(79,172,254,0.15); }
+}
+
+/* ===== Headings ===== */
+.login-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+.gradient-text {
+  background: linear-gradient(135deg, #4facfe 0%, #f093fb 50%, #f5576c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.login-subtitle {
+  text-align: center;
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 36px;
+}
+
+/* ===== Form ===== */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.field-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.45);
+}
+.input-wrap {
+  position: relative;
+}
+.input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.3);
+  pointer-events: none;
+}
+.field-input {
+  width: 100%;
+  padding: 13px 14px 13px 42px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  box-sizing: border-box;
+}
+.field-input::placeholder { color: rgba(255,255,255,0.25); }
+.field-input:focus {
+  border-color: rgba(79,172,254,0.5);
+  box-shadow: 0 0 0 3px rgba(79,172,254,0.12);
+}
+
+/* ===== Button ===== */
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #4facfe 0%, #f5576c 100%);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.btn-login:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+.btn-login:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.bottom-link {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+}
+.bottom-link a {
+  color: #4facfe;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.bottom-link a:hover {
+  color: #f5576c;
+}
