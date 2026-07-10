@@ -2,9 +2,9 @@
 # Angular
 # ===================================
 
-/dist
-/.angular
-/.angular/cache
+dist/
+.angular/
+.angular/cache/
 /out-tsc
 /tmp
 /bazel-out
@@ -16,7 +16,7 @@
 # Node.js
 # ===================================
 
-/node_modules
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
