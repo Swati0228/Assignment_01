@@ -7,6 +7,7 @@ import { Sensex } from '../models/sensex';
 import Toastify from 'toastify-js';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
+import { SocketService } from '../services/socket';
 
 @Component({
   selector: 'app-dashboard',
@@ -66,7 +67,8 @@ public barChartOptions: ChartConfiguration<'bar'>['options'] = {
 };
   constructor(
     private sensexService: SensexService,
-    private router: Router
+    private router: Router,
+    private socketService: SocketService
   ) { }
   ngOnInit(): void {
     const token = localStorage.getItem('jwt');
@@ -75,6 +77,14 @@ public barChartOptions: ChartConfiguration<'bar'>['options'] = {
       return;
     }
     this.loadPageData(this.currentPage(), this.pageSize());
+     this.socketService.getSocket().on('newRecord', () => {
+
+    console.log("📢 New record received");
+
+    // Refresh first page so newest record appears on top
+    this.loadPageData(1, this.pageSize());
+
+  });
   }
   loadPageData(page: number, limit: number): void {
     this.sensexService.getSensexData(page, limit).subscribe({
