@@ -5,11 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { SensexService } from '../services/sensex.service';
 import { Sensex } from '../models/sensex';
 import Toastify from 'toastify-js';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartConfiguration } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,BaseChartDirective],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
@@ -22,6 +24,46 @@ export class Dashboard implements OnInit {
   totalRecords = signal<number>(0);
   // Compute total pages dynamically
   totalPages = computed(() => Math.ceil(this.totalRecords() / this.pageSize()));
+  // ======================
+// Chart Variables
+// ======================
+
+showChart = false;
+
+public barChartData: ChartConfiguration<'bar'>['data'] = {
+  labels: [],
+  datasets: [
+    {
+      label: 'Average Monthly Closing Price',
+      data: [],
+      backgroundColor: '#4facfe'
+    }
+  ]
+};
+
+public barChartOptions: ChartConfiguration<'bar'>['options'] = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: true
+    }
+  },
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'Month'
+      }
+    },
+    y: {
+      title: {
+        display: true,
+        text: 'Average Closing Price'
+      },
+      beginAtZero: false
+    }
+  }
+};
   constructor(
     private sensexService: SensexService,
     private router: Router
@@ -98,8 +140,8 @@ export class Dashboard implements OnInit {
   }
   showModal = signal(false);
 
-newRecord = {
-  trade_date: '',
+  newRecord = {
+    trade_date: '',
   open: 0,
   close: 0
 };
@@ -156,7 +198,37 @@ addRecord(): void {
     }
   });
 
+  
+
+
 }
 
+showMonthlyChart(): void {
 
+  this.showChart = true;
+
+  this.sensexService.getMonthlyAverage().subscribe({
+
+    next: (data: any[]) => {
+
+      this.barChartData = {
+        labels: data.map(item => item.month),
+        datasets: [
+          {
+            label: 'Average Monthly Closing Price',
+            data: data.map(item => Number(item.average_close)),
+            backgroundColor: '#4facfe'
+          }
+        ]
+      };
+
+    },
+
+    error: (err) => {
+      console.error('Error loading monthly averages', err);
+    }
+
+  });
+
+}
 }

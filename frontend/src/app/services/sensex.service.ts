@@ -16,18 +16,8 @@ export class SensexService {
     return this.http.get<{ data: Sensex[], totalCount: number, page: number, limit: number }>(`${this.apiUrl}?page=${page}&limit=${limit}`);
   }
   addSensexRecord(record: Sensex) {
-
-  return this.http.post(
-    'http://localhost:3000/api/sensex',
-    record,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    }
-  );
-
-}
+    return this.http.post('http://localhost:3000/api/sensex', record);
+  }
 getMonthlyAverage() {
   return this.http.get<any[]>(
     'http://localhost:3000/api/monthly-average'
