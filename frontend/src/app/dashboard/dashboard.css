@@ -820,9 +820,13 @@ td.right {
 
 /* Add Record Button */
 .add-record-container {
-  margin-top: 25px;
-  margin-bottom: 10px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 28px 24px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .btn-add {
@@ -839,10 +843,68 @@ td.right {
   gap: 8px;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  font-family: inherit;
 }
 
 .btn-add:hover {
   background: linear-gradient(135deg, rgba(67, 233, 123, 0.3), rgba(67, 233, 123, 0.1));
   box-shadow: 0 8px 24px rgba(67, 233, 123, 0.2);
   transform: translateY(-2px);
+}
+
+/* Chart button — distinct blue/purple style */
+.btn-chart {
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(102, 126, 234, 0.1)) !important;
+  border: 1px solid rgba(79, 172, 254, 0.35) !important;
+  color: var(--neon-blue) !important;
+}
+
+.btn-chart:hover {
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.3), rgba(102, 126, 234, 0.2)) !important;
+  box-shadow: 0 8px 24px rgba(79, 172, 254, 0.25) !important;
+  transform: translateY(-2px);
+}
+
+/* ===== Chart Container ===== */
+.chart-container {
+  margin-top: 32px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.chart-header h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-white);
+  margin: 0;
+}
+
+.btn-close-chart {
+  background: rgba(245, 87, 108, 0.1);
+  border: 1px solid rgba(245, 87, 108, 0.25);
+  border-radius: 50px;
+  color: #f5576c;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  font-family: inherit;
+}
+
+.btn-close-chart:hover {
+  background: rgba(245, 87, 108, 0.2);
+  border-color: rgba(245, 87, 108, 0.5);
 }
