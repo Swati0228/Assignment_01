@@ -92,6 +92,15 @@
         <h2>Historical Data</h2>
         <span class="year-chip">📅 2018</span>
       </div>
+      <div class="search-box">
+    <input
+      type="text"
+      placeholder="Search by date or year..."
+      [ngModel]="searchText()"
+      (ngModelChange)="onSearch($event)">
+  </div>
+
+
     </div>
 
     <div class="table-scroll">
