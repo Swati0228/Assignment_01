@@ -153,29 +153,59 @@ app.post("/api/sensex", authenticateToken, async (req, res) => {
 // ========================
 // FETCH SENSEX DATA WITH PAGINATION
 // ========================
-app.get("/api/sensex", authenticateToken, async (req, res) => {
+ app.get("/api/sensex", authenticateToken, async (req, res) => {
 
   try {
 
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 30;
     const offset = (page - 1) * limit;
+  const search = (req.query.search || "").trim();
 
-    const countResult = await pool.query(
-      "SELECT COUNT(*) FROM sensex_data"
-    );
+    let countResult;
+    let dataResult;
 
-    const totalCount = parseInt(countResult.rows[0].count, 10);
+    if (search === "") {
 
-    const dataResult = await pool.query(
-      `
-      SELECT trade_date, open, high, low, close
-      FROM sensex_data
-      ORDER BY trade_date DESC
-      LIMIT $1 OFFSET $2
-      `,
-      [limit, offset]
-    );
+      countResult = await pool.query(
+        "SELECT COUNT(*) FROM sensex_data"
+      );
+
+      dataResult = await pool.query(
+        `
+        SELECT trade_date, open, high, low, close
+        FROM sensex_data
+        ORDER BY trade_date DESC
+        LIMIT $1 OFFSET $2
+        `,
+        [limit, offset]
+      );
+
+    } else {
+
+      countResult = await pool.query(
+        `
+        SELECT COUNT(*)
+        FROM sensex_data
+        WHERE CAST(trade_date AS TEXT) ILIKE $1
+        `,
+        [`%${search}%`]
+      );
+
+      dataResult = await pool.query(
+        `
+        SELECT trade_date, open, high, low, close
+        FROM sensex_data
+        WHERE CAST(trade_date AS TEXT) ILIKE $1
+        ORDER BY trade_date DESC
+        LIMIT $2 OFFSET $3
+        `,
+        [`%${search}%`, limit, offset]
+      );
+
+    }
+
+    const totalCount = parseInt(countResult.rows[0].count);
 
     res.json({
       data: dataResult.rows,
@@ -195,6 +225,8 @@ app.get("/api/sensex", authenticateToken, async (req, res) => {
   }
 
 });
+
+
 
 // ========================
 // MONTHLY AVERAGE CLOSING PRICE
