@@ -385,6 +385,9 @@ h1 {
 }
 
 .table-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 22px 28px;
   border-bottom: 1px solid var(--glass-border);
 }
@@ -409,6 +412,35 @@ h1 {
   border: 1px solid rgba(102, 126, 234, 0.2);
   border-radius: 100px;
   color: #c4b5fd;
+}
+
+.search-box {
+  position: relative;
+  width: 280px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.search-box input::placeholder {
+  color: var(--text-faint);
+}
+
+.search-box input:focus {
+  border-color: rgba(79, 172, 254, 0.5);
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.12);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .table-scroll {
